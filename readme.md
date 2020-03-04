@@ -21,6 +21,10 @@ Lol Dante.
     * The `last_updated` field could be when the queue last interacted with this profile? There seems to be a batch job running at 5pm, e.g.
     * birthdays are almost certainly always wrong.
     * pics can be accessed without a token on cloudfront (presumably only for caching, as CDN?). Url pattern would probably be hard to infer.
+    * `pair_bagel_type=0` seems to be the ones you liked (but did not like + comment?), `=-1` seems to be the one you passed.
+    * `pair_action=1` seems to be the ones I matched with. No idea what 0 or 2 means.
+    * `action=[0-9]+` seems related with how many times this profile is represented to you / opened?
+    * `source` seen recommendation and boost_v1.0
   * `/givetakes`, Discover tab
     * Notably they don't have `rising_bagel_count` and the request got back 20, a few more than the daily discover count.
     * `updated_after=seconds_since_epoch` param
@@ -28,4 +32,4 @@ Lol Dante.
 * Possibilities:
   * Free interaction with your queue: history of matches, upcoming matches, and can potentially see more bagels without spending beans. (Then with enough number of fake accounts, we can sample the population.)
 
-Firebase, XMPP chat, send chat message, like in suggestion, like with msg, like in discover
+Firebase, XMPP chat, send chat message, like in suggestion, like with msg, like in discover, those who like you?
