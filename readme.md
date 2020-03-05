@@ -28,6 +28,10 @@ Lol Dante.
   * `/givetakes`, Discover tab
     * Notably they don't have `rising_bagel_count` and the request got back 20, a few more than the daily discover count.
     * `updated_after=seconds_since_epoch` param
+  * `/profile` exists, though I don't know the params to interact with it.
+  * `/discoversearch`
+  * user's location might be realtime enough, the lat, long narrows it down to within 10 blocks-ish
+
 
 * Possibilities:
   * Free interaction with your queue: history of suggestions, upcoming suggestions, and can potentially see more bagels without spending beans. (Then with enough number of fake accounts, we can sample the population.)
