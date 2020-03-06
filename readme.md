@@ -23,6 +23,8 @@ Appreciate:
 [('laugh', 98), ('humor', 70), ('sense', 66), ('good', 62), ('kind', 58), ('things', 37), ('genuine', 35), ('conversation', 34), ('new', 33), ('great', 33)]
 ```
 
+I'm an NLP noob. Don't "laugh" please.
+
 I am:
 ```
 [('new', 80), ('passionate', 44), ('good', 39), ('things', 35), ('person', 34), ('lover', 32), ('life', 31), ('foodie', 29), ('someone', 24), ('little', 22)]
