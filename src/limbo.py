@@ -17,7 +17,7 @@ def parse_args():
           ./limbo.py --glob ../examples/*.json
     """)
     parser.add_argument("--glob", help="the profile files (json) glob", default="../data/*.json")
-    parser.add_argument("--out", help="the html out", default="profiles.html")
+    parser.add_argument("--mode", help="the mode to use [hist|token|html]", default="html")
     args = parser.parse_args()
     return args
 
@@ -82,21 +82,39 @@ def main():
 
     sorted_profiles = sorted(pe.profiles.values(), key=lambda x: x["likes"])
 
-    # for p in sorted_profiles:
-    #     print(p["name"], p["likes"])
+    if args.mode == "hist":
+        gen_plot(sorted_profiles)
+    elif args.mode == "token":
+        gen_token(sorted_profiles)
+    elif args.mode == "html":
+        gen_html(sorted_profiles)
+    else:
+        raise NotImplementedError("{} is not implemented".format(args.mode))
+
+    return
+
+def gen_plot(profiles):
+    """plot histogram of likes
+    """
+    for p in sorted_profiles:
+        print(p["name"], p["likes"])
     
-    # plot_hist([p["likes"] for p in sorted_profiles if p["likes"] >= 0])
+    plot_hist([p["likes"] for p in profiles if p["likes"] >= 0])
+    return
     
+def gen_token(profiles):
     # nouns and adjectives
-    appreciate = tokenize([p["appreciate_in_date"] for p in sorted_profiles], ['JJ', 'NN', 'NNP', 'NNS'])
-    i_am = tokenize([p["i_am"] for p in sorted_profiles], ['JJ', 'NN', 'NNP', 'NNS'])
+    appreciate = tokenize([p["appreciate_in_date"] for p in profiles], ['JJ', 'NN', 'NNP', 'NNS'])
+    i_am = tokenize([p["i_am"] for p in profiles], ['JJ', 'NN', 'NNP', 'NNS'])
     # nouns and verbs
-    interest = tokenize([p["interested_in"] for p in sorted_profiles], ['V', 'NN', 'NNP', 'NNS'])
+    interest = tokenize([p["interested_in"] for p in profiles], ['V', 'NN', 'NNP', 'NNS'])
     
     print("most commonly sought after: {}".format(appreciate))
     print("most common attributes: {}".format(i_am))
     print("most common interests: {}".format(interest))
+    return
 
+def gen_html(profiles):
     return
 
 # post processing funcs.
@@ -155,6 +173,9 @@ def tokenize(series, filter_category):
     
     word_count_sorted = sorted(word_count.items(), key=lambda x: x[1], reverse=True)
     return word_count_sorted[:10]
+
+def gen_html():
+
 
 if __name__ == "__main__":
     main()

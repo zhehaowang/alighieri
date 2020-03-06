@@ -116,7 +116,21 @@ class Searcher():
     
     def run(self):
         params = self._permutate()
-        print("constructed {} queries".format(len(params)))
+        url = "{}?embed=profile".format(self.api_endpoint)
+        for param_set in params:
+            # a most unfortunate hack
+            param_set["height_cm_to"] = param_set["height_cm_from"] + 5
+            
+            response = requests.get(url, param_set, headers=self._headers, cookies=self._cookies)
+            if response.status_code != 200:
+                print("error response {}".format(response.status_code))
+            else:
+                ts = int(time.time())
+                outfile_name = os.path.join(self._outdir, "search_{}_{}.json".format(param_set, ts))
+                with open(outfile_name, "w") as outfile:
+                    outfile.write(response.text)
+                print("written {}".format(outfile_name))
+        
         return
 
 def main():
