@@ -22,15 +22,19 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+
+HEADERS = {
+    "accept": "application/json",
+    "appstore-version": "6.27.0",
+    "app-version": "8583",
+    "accept-language": "en",
+    "user-agent": "CMB/6.27.0 (com.coffeemeetsbagel.mobile.ios; build:8583; iOS 12.1.4) Alamofire/4.8.0"
+}
+
+
 class Requester():
     def __init__(self, session, outdir):
-        self._headers = {
-            "accept": "application/json",
-            "appstore-version": "6.27.0",
-            "app-version": "8583",
-            "accept-language": "en",
-            "user-agent": "CMB/6.27.0 (com.coffeemeetsbagel.mobile.ios; build:8583; iOS 12.1.4) Alamofire/4.8.0"
-        }
+        self._headers = HEADERS
         self._cookies = {
             "sessionid": session
         }
@@ -71,14 +75,61 @@ class Requester():
         self.send_request()
         return
 
+class Searcher():
+    def __init__(self, session, outdir):
+        self._headers = HEADERS
+        self._outdir = outdir
+        self._cookies = {
+            "sessionid": session
+        }
+        self.api_endpoint = "https://api.coffeemeetsbagel.com/discoversearch"
+
+        self.criteria = {
+            "age_from": range(22, 28),
+            "degree": ["bachelors", "phd", "masters"],
+            "ethnicity": ["Asian"],
+            "height_cm_from": range(120, 190, 5),
+            "max_distance_km": [16],
+            "recently_active": ["true"]
+        }
+        return
+
+    def _permutate(self):
+        result_params = []
+        current = {}
+        keys = list(self.criteria.keys())
+        keyidx = 0
+
+        def _append(keyidx, current):
+            if keyidx == len(keys):
+                result_params.append(dict(current))
+                return
+            for v in self.criteria[keys[keyidx]]:
+                current[keys[keyidx]] = v
+                _append(keyidx + 1, current)
+        
+        _append(keyidx, current)
+        return result_params
+
+    def _query(self):
+        return
+    
+    def run(self):
+        params = self._permutate()
+        print("constructed {} queries".format(len(params)))
+        return
+
 def main():
     args = parse_args()
 
     if args.save_pics:
         raise NotImplementedError("save_pics is not implemented")
 
-    requester = Requester(args.session, args.outdir)
-    requester.run()
+    # requester = Requester(args.session, args.outdir)
+    # requester.run()
+
+    searcher = Searcher(args.session, args.outdir)
+    searcher.run()
     return
 
 if __name__ == "__main__":
