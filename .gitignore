@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-examples/me*
+# sessions, data, example request response redacted
+examples/*
+src/sessions
+data/*.json
 
 # C extensions
 *.so

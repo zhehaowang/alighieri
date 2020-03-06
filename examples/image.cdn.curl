@@ -1,1 +1,0 @@
-curl -H 'Host: cdn.cmb.io' -H 'user-agent: CMB/6.27.0 (iPad; iOS 12.1.4; Scale/2.00)' -H 'accept: image/webp,image/*;q=0.8' -H 'accept-language: en-us' --compressed 'https://cdn.cmb.io/cache/c5/7f/c57feb577928d3a0d2fcbbf6f08a432e.jpg?auto=compress&fm=webp&s=3fb403c52b8cd383bc209cb38a561e21
