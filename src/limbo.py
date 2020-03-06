@@ -87,7 +87,26 @@ def main():
 
     for p in sorted_profiles:
         print(p["name"], p["likes"])
+    
+    plot_bar([p["likes"] for p in sorted_profiles])
     return
+
+# post processing. for now just plot histagram of likes. to be moved once we flesh out what stats we want
+def plot_bar(series):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    series_in = np.array(series)
+    binwidth = 20
+
+    print("Average number of likes: {}".format(np.mean(series_in)))
+    print("Std: {}".format(np.std(series_in)))
+
+    plt.title("Distribution of number of likes profiles")
+    plt.xlabel('Number of likes')
+    plt.ylabel('Number of profiles')
+
+    plt.hist(series_in, bins=range(min(series_in), max(series_in) + binwidth, binwidth))
+    plt.show()
 
 if __name__ == "__main__":
     main()
