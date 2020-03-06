@@ -13,3 +13,11 @@ Drawn from 200+ samples biased towards young Asian.
 ![Distribution of likes](res/likes_distribution.png)
 
 It does not seem ludicrous to model this with a Poisson distribution.
+
+### [CMB app protocol](scratch.md)
+
+### Disclaimer
+
+For research only.
+
+The program may be able to dig up certain portions of what a user tells CMB, but should not be used as such.
