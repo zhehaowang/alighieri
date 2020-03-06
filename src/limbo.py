@@ -88,11 +88,14 @@ def main():
     for p in sorted_profiles:
         print(p["name"], p["likes"])
     
-    plot_bar([p["likes"] for p in sorted_profiles])
+    # plot_hist([p["likes"] for p in sorted_profiles])
+    
+    tokenize([p["appreciate_in_date"] for p in sorted_profiles])
     return
 
-# post processing. for now just plot histagram of likes. to be moved once we flesh out what stats we want
-def plot_bar(series):
+# post processing funcs.
+# for now just plot histagram of likes. to be moved once we flesh out what stats we want
+def plot_hist(series):
     import numpy as np
     import matplotlib.pyplot as plt
     series_in = np.array(series)
@@ -107,6 +110,41 @@ def plot_bar(series):
 
     plt.hist(series_in, bins=range(min(series_in), max(series_in) + binwidth, binwidth))
     plt.show()
+
+def tokenize(series):
+    import nltk
+
+    # from nltk.stem.snowball import SnowballStemmer
+    # stemmer = SnowballStemmer("english")
+    # print(stemmer.stem(t))
+    
+    from nltk.corpus import stopwords
+    from nltk.corpus import brown
+
+    word_count = {}
+
+    for s in series:
+        tokens = nltk.word_tokenize(s)
+        filtered_words = [word for word in tokens if word not in stopwords.words('english') and word.isalpha()]
+        
+        # brown_tagged = brown.tagged_words(tagset='universal')
+        # word_tag_pairs = nltk.bigrams(brown_tagged)
+        # noun_preceders = [a[1] for (a, b) in word_tag_pairs if b[1] == 'NOUN']
+        # fdist = nltk.FreqDist(noun_preceders)
+        # print([tag for (tag, _) in fdist.most_common()])
+
+        pos_tag = nltk.pos_tag(filtered_words)
+        for w in pos_tag:
+            if w[1] in ['JJ', 'NN', 'NNP', 'NNS']:
+                sanitized = w[0].lower()
+                if sanitized in word_count:
+                    word_count[sanitized] += 1
+                else:
+                    word_count[sanitized] = 1
+        # print(filtered_words)
+    
+    word_count_sorted = sorted(word_count.items(), key=lambda x: x[1])
+    print(word_count_sorted[-10:])
 
 if __name__ == "__main__":
     main()

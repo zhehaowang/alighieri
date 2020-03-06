@@ -14,6 +14,14 @@ Drawn from 200+ samples biased towards young Asian.
 
 It does not seem ludicrous to model this with a Poisson distribution.
 
+### Most commonly sought after traits
+
+```
+[('new', 13), ('funny', 13), ('great', 14), ('kind', 18), ('conversation', 21), ('things', 23), ('good', 25), ('humor', 31), ('sense', 31), ('laugh', 38)]
+```
+
+I'm a total NLP noob. Don't laugh please.
+
 ### [CMB app protocol](scratch.md)
 
 ### Disclaimer
