@@ -27,6 +27,7 @@
   * `/purchase` skip the line like (180x beans, Woo). even though frontend sends expected price, it appears backend deducts 540 anyway. multiple Woos appear to have no effects on the same profile. Like from discover (385) also goes through this. This like uses `give_ten_id` profile_id which we can't yet run profile query on.
   * `/risingbagels` ones that have liked you
   * user's location might be realtime enough, the lat, long narrows it down to within 10 blocks-ish
+  * presumably `"source": "rising_bagel"` is what indicates those that like you but you haven't liked back?
 
 * XMPP chat does not seem to through api.coffeemeetsbagel, which makes sense. It seems to go through inapps.appsflyer.com. The particular octet request seems to use its own encoding / encryption...
 
