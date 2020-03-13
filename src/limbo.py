@@ -17,7 +17,7 @@ def parse_args():
           ./limbo.py --glob ../examples/*.json
     """)
     parser.add_argument("--glob", help="the profile files (json) glob", default="../data/*.json")
-    parser.add_argument("--out", help="the html out", default="profiles.html")
+    parser.add_argument("--mode", help="the mode to use [hist|token|html]", default="html")
     args = parser.parse_args()
     return args
 
@@ -34,14 +34,11 @@ class ProfileExtractor():
             return [entry["iphone_fullscreen"] for entry in obj]
 
         for entry in o:
-            if "id" in entry:
-                try:
-                    uuid = UUID(entry["id"])
-                except ValueError:
-                    continue
-                if entry["id"] not in self.profiles and "profile" in entry:
-                    profile = entry["profile"]
-                    self.profiles[entry["id"]] = {
+            if "profile" in entry:
+                profile = entry["profile"]
+                profile_id = profile["id"]
+                if profile_id not in self.profiles and "profile" in entry:
+                    self.profiles[profile_id] = {
                         "age": int(_try_field_default(profile, "age", -1)),
                         "height_cm": int(_try_field_default(profile, "height_cm", -1)),
 
@@ -85,12 +82,39 @@ def main():
 
     sorted_profiles = sorted(pe.profiles.values(), key=lambda x: x["likes"])
 
+    if args.mode == "hist":
+        gen_plot(sorted_profiles)
+    elif args.mode == "token":
+        gen_token(sorted_profiles)
+    elif args.mode == "html":
+        gen_html(sorted_profiles)
+    else:
+        raise NotImplementedError("{} is not implemented".format(args.mode))
+
+    return
+
+def gen_plot(profiles):
+    """plot histogram of likes
+    """
     for p in sorted_profiles:
         print(p["name"], p["likes"])
     
-    # plot_hist([p["likes"] for p in sorted_profiles])
+    plot_hist([p["likes"] for p in profiles if p["likes"] >= 0])
+    return
     
-    tokenize([p["appreciate_in_date"] for p in sorted_profiles])
+def gen_token(profiles):
+    # nouns and adjectives
+    appreciate = tokenize([p["appreciate_in_date"] for p in profiles], ['JJ', 'NN', 'NNP', 'NNS'])
+    i_am = tokenize([p["i_am"] for p in profiles], ['JJ', 'NN', 'NNP', 'NNS'])
+    # nouns and verbs
+    interest = tokenize([p["interested_in"] for p in profiles], ['V', 'NN', 'NNP', 'NNS'])
+    
+    print("most commonly sought after: {}".format(appreciate))
+    print("most common attributes: {}".format(i_am))
+    print("most common interests: {}".format(interest))
+    return
+
+def gen_html(profiles):
     return
 
 # post processing funcs.
@@ -111,7 +135,7 @@ def plot_hist(series):
     plt.hist(series_in, bins=range(min(series_in), max(series_in) + binwidth, binwidth))
     plt.show()
 
-def tokenize(series):
+def tokenize(series, filter_category):
     import nltk
 
     # from nltk.stem.snowball import SnowballStemmer
@@ -132,19 +156,26 @@ def tokenize(series):
         # noun_preceders = [a[1] for (a, b) in word_tag_pairs if b[1] == 'NOUN']
         # fdist = nltk.FreqDist(noun_preceders)
         # print([tag for (tag, _) in fdist.most_common()])
-
+        
+        in_this = {}
         pos_tag = nltk.pos_tag(filtered_words)
         for w in pos_tag:
-            if w[1] in ['JJ', 'NN', 'NNP', 'NNS']:
+            if w[1] in filter_category:
                 sanitized = w[0].lower()
+                if sanitized in in_this:
+                    continue
+                in_this[sanitized] = True
                 if sanitized in word_count:
                     word_count[sanitized] += 1
                 else:
                     word_count[sanitized] = 1
         # print(filtered_words)
     
-    word_count_sorted = sorted(word_count.items(), key=lambda x: x[1])
-    print(word_count_sorted[-10:])
+    word_count_sorted = sorted(word_count.items(), key=lambda x: x[1], reverse=True)
+    return word_count_sorted[:10]
+
+def gen_html():
+
 
 if __name__ == "__main__":
     main()

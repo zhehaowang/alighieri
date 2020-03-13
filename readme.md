@@ -8,19 +8,32 @@ Lol Dante.
 
 ### Distribution of likes
 
-Drawn from 200+ samples heavily biased towards young Asian.
+Drawn from 200+ samples heavily biased towards young Asian in NYC area.
 
 ![Distribution of likes](res/likes_distribution.png)
 
 It does not seem ludicrous to model this with a Poisson distribution.
 
-### Most commonly sought after traits
+### Profile description stats
 
+Drawn from 600+ samples heavily biased towards young Asian in NYC area.
+
+Appreciate:
 ```
-[('new', 13), ('funny', 13), ('great', 14), ('kind', 18), ('conversation', 21), ('things', 23), ('good', 25), ('humor', 31), ('sense', 31), ('laugh', 38)]
+[('laugh', 98), ('humor', 70), ('sense', 66), ('good', 62), ('kind', 58), ('things', 37), ('genuine', 35), ('conversation', 34), ('new', 33), ('great', 33)]
 ```
 
-I'm a total NLP noob. Don't "laugh" please.
+I'm an NLP noob. Don't "laugh" please.
+
+I am:
+```
+[('new', 80), ('passionate', 44), ('good', 39), ('things', 35), ('person', 34), ('lover', 32), ('life', 31), ('foodie', 29), ('someone', 24), ('little', 22)]
+```
+
+Interested in:
+```
+[('food', 85), ('music', 67), ('things', 66), ('movies', 54), ('friends', 50), ('city', 44), ('people', 36), ('restaurants', 36), ('coffee', 34), ('travel', 33)]
+```
 
 ### [CMB app protocol](scratch.md)
 
